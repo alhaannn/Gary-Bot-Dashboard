@@ -2,7 +2,9 @@
 
 A beautifully designed, real-time Telegram Mini App dashboard specifically built for the GaryBot trading engine.
 
-## Overview
+<details>
+<summary><h2>Overview</h2></summary>
+
 This project is a Next.js 14 App Router application that operates entirely independently from the main GaryBot engine. It connects directly to the Supabase telemetry database that GaryBot pushes to, securely pulling live PnL, Win Rates, and trade execution data in real-time.
 
 It features:
@@ -11,7 +13,10 @@ It features:
 - **Trader Isolation:** Filter metrics to view combined analytics or isolate specifically to a single Telegram channel monitor (e.g. `Gary_TheTrader` vs `goldtradersunny`).
 - **Telegram Mini-App Optimization:** Designed inside a completely responsive framer-motion wrapper to look absolutely perfect operating within the Telegram chat interface on your phone.
 
-## Setup & Deployment
+</details>
+
+<details>
+<summary><h2>Setup & Deployment</h2></summary>
 
 1. **Supabase Setup:** Make sure GaryBot is correctly feeding data into your Supabase `trades` project.
 2. **Environment Configuration:** Configure Vercel environment variables directly using the instructions laid out in `setup.md`. You'll need three keys:
@@ -29,3 +34,5 @@ It features:
 
 4. **Connecting back to GaryBot:**
    Once Vercel issues your live deployment link (e.g., `https://garybot-dash.vercel.app`), open the main Python backend for GaryBot, edit `config.py` and set the variable to `DASHBOARD_URL = "https://garybot-dash.vercel.app"`. GaryBot will now dynamically attach this directly into all Telegram Signal alerts it sends!
+
+</details>
