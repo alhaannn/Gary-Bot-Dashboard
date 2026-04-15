@@ -1,36 +1,31 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# GaryBot Analytics Dashboard (Telegram Mini App)
 
-## Getting Started
+A beautifully designed, real-time Telegram Mini App dashboard specifically built for the GaryBot trading engine.
 
-First, run the development server:
+## Overview
+This project is a Next.js 14 App Router application that operates entirely independently from the main GaryBot engine. It connects directly to the Supabase telemetry database that GaryBot pushes to, securely pulling live PnL, Win Rates, and trade execution data in real-time.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+It features:
+- **Performance Calendar:** Automatically groups closures by specific calendar days evaluated natively in strictly Indian Standard Time (IST).
+- **Compounding Equity Curve:** Calculates your total account balance incrementally from a customizable base capital tracking per month.
+- **Trader Isolation:** Filter metrics to view combined analytics or isolate specifically to a single Telegram channel monitor (e.g. `Gary_TheTrader` vs `goldtradersunny`).
+- **Telegram Mini-App Optimization:** Designed inside a completely responsive framer-motion wrapper to look absolutely perfect operating within the Telegram chat interface on your phone.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Setup & Deployment
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. **Supabase Setup:** Make sure GaryBot is correctly feeding data into your Supabase `trades` project.
+2. **Environment Configuration:** Configure Vercel environment variables directly using the instructions laid out in `setup.md`. You'll need three keys:
+   ```env
+   NEXT_PUBLIC_SUPABASE_URL=https://your-project-id.supabase.co
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key_here
+   NEXT_PUBLIC_STARTING_BALANCE=2500
+   ```
+   *(Note: You can easily change your account's tracked starting balance every month by simply adjusting `NEXT_PUBLIC_STARTING_BALANCE`).*
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+3. **Deploying to Vercel:**
+   Push this sub-repository to its own GitHub and import it on Vercel. 
+   - Framework Preset: Next.js
+   - Run Command: `npm run build`
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+4. **Connecting back to GaryBot:**
+   Once Vercel issues your live deployment link (e.g., `https://garybot-dash.vercel.app`), open the main Python backend for GaryBot, edit `config.py` and set the variable to `DASHBOARD_URL = "https://garybot-dash.vercel.app"`. GaryBot will now dynamically attach this directly into all Telegram Signal alerts it sends!
