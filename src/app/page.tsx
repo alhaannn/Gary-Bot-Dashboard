@@ -101,7 +101,7 @@ export default function Dashboard() {
     });
 
     const totalPnL = monthlyTrades.reduce((acc, t) => acc + (t.pnl || 0), 0);
-    const closedTrades = monthlyTrades.filter(t => t.pnl !== 0);
+    const closedTrades = monthlyTrades.filter(t => t.status !== "OPEN");
     const winTrades = closedTrades.filter(t => t.pnl > 0);
     const winRate = closedTrades.length ? (winTrades.length / closedTrades.length) * 100 : 0;
     
@@ -125,7 +125,7 @@ export default function Dashboard() {
   const dailyPnLMap = useMemo(() => {
     const map = new Map<string, number>();
     // We base daily performance on 'updated_at' (when it closed)
-    filteredTrades.filter(t => t.pnl !== 0).forEach(t => {
+    filteredTrades.filter(t => t.status !== "OPEN").forEach(t => {
       const { year, month, day } = getISTDateParams(t.updated_at || t.created_at);
       const key = `${year}-${month}-${day}`;
       map.set(key, (map.get(key) || 0) + t.pnl);
@@ -381,9 +381,9 @@ export default function Dashboard() {
                       
                       {/* Right Panel PnL */}
                       <div className="text-right">
-                        {trade.pnl !== 0 ? (
-                          <div className={`font-bold text-lg flex items-center justify-end gap-1 ${trade.pnl > 0 ? "text-emerald-400" : "text-rose-400"}`}>
-                            {trade.pnl > 0 ? <ArrowUpRight size={20} strokeWidth={3}/> : <ArrowDownRight size={20} strokeWidth={3}/>}
+                        {trade.status !== "OPEN" ? (
+                          <div className={`font-bold text-lg flex items-center justify-end gap-1 ${trade.pnl > 0 ? "text-emerald-400" : trade.pnl < 0 ? "text-rose-400" : "text-slate-400"}`}>
+                            {trade.pnl > 0 ? <ArrowUpRight size={20} strokeWidth={3}/> : trade.pnl < 0 ? <ArrowDownRight size={20} strokeWidth={3}/> : null}
                             ${Math.abs(trade.pnl).toFixed(2)}
                           </div>
                         ) : (
